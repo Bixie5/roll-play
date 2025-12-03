@@ -1,0 +1,216 @@
+[gd_scene load_steps=15 format=3 uid="uid://cdx12em7vm1f4"]
+
+[ext_resource type="Texture2D" uid="uid://bttnimtbhsdl5" path="res://assets/Objects/Dice/six sided die.png" id="1_ju2fo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4jp2"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(0, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qu4n6"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(16, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xak8u"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(32, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8eu0n"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(48, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0c8ac"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(64, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4pxb"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(80, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ju2fo"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1erj6"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g08j5"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k2puv"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wa5hx"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60lre"]
+atlas = ExtResource("1_ju2fo")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1erj6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4jp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xak8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eu0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4pxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ju2fo")
+}],
+"loop": false,
+"name": &"dice roll 1",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4jp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xak8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eu0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4pxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1erj6")
+}],
+"loop": false,
+"name": &"dice roll 2",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4jp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xak8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eu0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4pxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g08j5")
+}],
+"loop": false,
+"name": &"dice roll 3",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4jp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xak8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eu0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4pxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k2puv")
+}],
+"loop": false,
+"name": &"dice roll 4",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4jp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xak8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eu0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4pxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wa5hx")
+}],
+"loop": false,
+"name": &"dice roll 5",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4jp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xak8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eu0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4pxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60lre")
+}],
+"loop": false,
+"name": &"dice roll 6",
+"speed": 7.0
+}]
+
+[node name="dice" type="CharacterBody2D"]
+
+[node name="dice_sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1erj6")
+animation = &"dice roll 2"

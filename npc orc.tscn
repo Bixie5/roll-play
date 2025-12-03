@@ -1,0 +1,111 @@
+[gd_scene load_steps=14 format=3 uid="uid://dbkwlet3nbk5c"]
+
+[ext_resource type="Script" uid="uid://bkb3icex3dinq" path="res://npc_orc.gd" id="1_d5y7n"]
+[ext_resource type="Texture2D" uid="uid://co5b86jd6sd7c" path="res://assets/Character/Orc-Idle.png" id="1_y0r2h"]
+[ext_resource type="FontFile" uid="uid://dyx4k5kg1q2fc" path="res://Font/Merchant Copy.ttf" id="3_mr6gf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5y7n"]
+atlas = ExtResource("1_y0r2h")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr6gf"]
+atlas = ExtResource("1_y0r2h")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dmxpn"]
+atlas = ExtResource("1_y0r2h")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfurc"]
+atlas = ExtResource("1_y0r2h")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1a3qs"]
+atlas = ExtResource("1_y0r2h")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xbj4"]
+atlas = ExtResource("1_y0r2h")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hcl8y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d5y7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr6gf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dmxpn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfurc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1a3qs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xbj4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cpjt1"]
+radius = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mr6gf"]
+radius = 4.09441
+height = 21.9823
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mr6gf"]
+size = Vector2(81.5, 12)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_d5y7n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -9)
+scale = Vector2(1.2, 1.348)
+sprite_frames = SubResource("SpriteFrames_hcl8y")
+autoplay = "default"
+frame_progress = 0.748544
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("CircleShape2D_cpjt1")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(14, -8)
+rotation = -1.61094
+shape = SubResource("CapsuleShape2D_mr6gf")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1.25, -1)
+shape = SubResource("RectangleShape2D_mr6gf")
+
+[node name="DialogueBubble" type="Panel" parent="."]
+offset_left = -31.0
+offset_top = -53.0
+offset_right = 147.0
+offset_bottom = -21.0
+
+[node name="Label" type="Label" parent="DialogueBubble"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 173.0
+offset_bottom = 28.0
+theme_override_fonts/font = ExtResource("3_mr6gf")
+theme_override_font_sizes/font_size = 15
+autowrap_mode = 3
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

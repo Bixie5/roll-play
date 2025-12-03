@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://c54e7bqbdndj6"]
+
+[ext_resource type="Texture2D" uid="uid://i42fohn6w34e" path="res://assets/Background/export202507191858231738.png" id="1_dtpse"]
+[ext_resource type="Texture2D" uid="uid://61qrq2imotky" path="res://assets/Background/PikPng.com_health-bar-png_769017.png" id="1_qpa7t"]
+[ext_resource type="Texture2D" uid="uid://donpeffwgbini" path="res://assets/Background/export202507191830544121.png" id="2_dtpse"]
+
+[node name="Healthbar" type="TextureProgressBar"]
+offset_left = -107.0
+offset_top = -20.0
+offset_right = 794.0
+offset_bottom = 221.0
+max_value = 400.0
+value = 400.0
+texture_under = ExtResource("1_dtpse")
+texture_over = ExtResource("1_qpa7t")
+texture_progress = ExtResource("2_dtpse")
