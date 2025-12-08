@@ -1,95 +1,112 @@
 extends Node2D
-@onready var dice = $dice/dice_sprite
+
+signal dice_rolled
+
+@onready var villain: CharacterBody2D = $villain
+@onready var player: CharacterBody2D = $player
+
+@onready var enemy_sprite: AnimatedSprite2D = $villain/AnimatedSprite2D
+@onready var player_sprite: AnimatedSprite2D = $player/AnimatedSprite2D
+
+@onready var dice = $dice
 @onready var player_hp_bar = $"player/Healthbar"
 @onready var enemy_hp_bar = $"villain/Healthbar2"
 
 var player_hp = 400
 var enemy_hp = 400
 
-var player_turn = true
+var player_attack_value = 0
+var enemy_attack_value = 0
 
-var player_attack
-var enemy_attack
+enum State {PLAYER_ATTACK, ENEMY_ATTACK, CALCULATE}
+var state = State.PLAYER_ATTACK
+
+var player_won = false
+var enemy_won = false
+
+var game_over = false
 
 func _ready() -> void:
-	print("Started Game")
-	update_health_bars() 
-
-var can_press = true
-#var turn = true
-func _process(delta: float) -> void:
-	start_game()
-
-func start_game():
-	if player_turn and Input.is_action_just_pressed("dice roll") and can_press:
-		can_press = false
-		var player_choice = choose()
-		await roll_dice(player_choice)
-		player_attack = roll_conversion(player_choice)
-		
-		await get_tree().create_timer(1.0).timeout #wait for the enemy to roll so that animation doesnt get frame mixed
-		
-		var enemy_choice = choose()
-		await roll_dice(enemy_choice)
-		enemy_attack = roll_conversion(enemy_choice)
-		
-		if player_attack > enemy_attack:
-			var damage = abs(player_attack - enemy_attack)
-			enemy_hp -= damage
-			update_health_bars()
-		elif player_attack < enemy_attack:
-			var damage = abs(player_attack - enemy_attack)
-			player_hp -= damage
-			update_health_bars()
-		
-		player_turn = !player_turn #swap turns
+	player_hp = 400
+	enemy_hp = 400
 	
-	if !player_turn:
-		await get_tree().create_timer(1.0).timeout #wait for the enemy to roll so that animation doesnt get frame mixed
-		var enemy_choice = choose()
-		await roll_dice(enemy_choice)
-		var enemy_attack = roll_conversion(enemy_choice)
-		
-		await get_tree().create_timer(1.0).timeout #now wait so player can roll
-		can_press = true
-		
-		if Input.is_action_just_pressed("dice roll") and can_press:
-			can_press = false
-			var player_choice = choose()
-			await roll_dice(player_choice)
-			player_attack = roll_conversion(player_choice)
-		
-		if player_attack > enemy_attack:
-			var damage = abs(player_attack - enemy_attack)
-			enemy_hp -= damage
-			update_health_bars()
-		elif player_attack < enemy_attack:
-			var damage = abs(player_attack - enemy_attack)
-			player_hp -= damage
-			update_health_bars()
-		
-		player_turn = !player_turn #swap turns
-
-func choose() -> int:
-	var choices = [1,2,3,4,5,6]
-	return choices.pick_random()
-
-func roll_conversion(dice_val):
-	var converted_rolls = [0, 20, 50, 100, 150, 200]
-	return converted_rolls[dice_val - 1]
-
-func update_health_bars():
 	player_hp_bar.value = player_hp
 	enemy_hp_bar.value = enemy_hp
+	
+	start_game()
 
-func check_game_over():
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("dice roll"):
+		emit_signal("dice_rolled")
+
+func start_game():
+	while not game_over:
+		match state:
+			State.PLAYER_ATTACK:
+				await player_turn()
+			State.ENEMY_ATTACK:
+				await enemy_turn()
+			State.CALCULATE:
+				calculate_and_update_score(player_attack_value, enemy_attack_value)
+	
+	if game_over:
+		if player_won:
+			enemy_sprite.play("death")
+		else:
+			player_sprite.play("death")
+
+func player_turn():
+	if player_won or enemy_won:
+		game_over = true
+		return
+	
+	await dice_rolled
+	var choice = await roll_dice()
+	player_attack_value = calc_attack_amount(choice)
+	await get_tree().create_timer(2.0).timeout
+	state = State.ENEMY_ATTACK
+
+func enemy_turn():
+	var choice = await roll_dice()
+	enemy_attack_value = calc_attack_amount(choice)
+	state = State.CALCULATE
+
+func calculate_and_update_score(player_attack_value, enemy_attack_value):
+	var damage = abs(player_attack_value - enemy_attack_value)
+	
+	var weaker_attack = 0
+	if player_attack_value != enemy_attack_value:
+		weaker_attack = min(player_attack_value, enemy_attack_value)
+		if weaker_attack == player_attack_value:
+			villain.position.x -= 300
+			enemy_sprite.play("attack")
+			
+			player_hp -= damage
+			player_hp_bar.value = player_hp
+			
+			print("player remaining life: ", player_hp)
+		elif weaker_attack == enemy_attack_value:
+			enemy_hp -= damage
+			enemy_hp_bar.value = enemy_hp
+			
+			print("remaining life of enemy: ", enemy_hp)
+			
+	
 	if player_hp <= 0:
-		print("Enemy wins!")
+		enemy_won = true
 	elif enemy_hp <= 0:
-		print("Player wins!")
+		player_won = true
+	
+	state = State.PLAYER_ATTACK
 
-func roll_dice(dice_val):
-	dice.play("dice roll " + str(dice_val))
-	await get_tree().create_timer(1.0).timeout
-	dice.stop()
-	dice.frame = dice.sprite_frames.get_frame_count("dice roll " + str(dice_val)) - 1
+func roll_dice():
+	var choices = [1, 2, 3, 4, 5, 6]
+	var choice = choices.pick_random()
+	print("dice roll " + str(choice))
+	dice.play("dice roll " + str(choice))
+	await dice.animation_finished
+	return choice
+
+func calc_attack_amount(choice):
+	var damage_value_list = [0, 20, 50, 100, 150, 200]
+	return damage_value_list[choice-1]

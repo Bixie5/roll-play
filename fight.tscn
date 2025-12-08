@@ -1,11 +1,53 @@
-[gd_scene load_steps=14 format=3 uid="uid://cy4dl1uthcetb"]
+[gd_scene load_steps=26 format=3 uid="uid://cy4dl1uthcetb"]
 
 [ext_resource type="PackedScene" uid="uid://bt0xl43v0iuhh" path="res://character1.tscn" id="1_3mnov"]
 [ext_resource type="Texture2D" uid="uid://dywq8o8jngj0i" path="res://assets/Background/8-bit-graphics-pixels-scene-with-forest.jpg" id="1_4jl1m"]
 [ext_resource type="Script" uid="uid://c1m3s8e1xuhh2" path="res://fight.gd" id="1_34m47"]
+[ext_resource type="Texture2D" uid="uid://b4d8w3cvjhp8p" path="res://assets/Character/Orc-Attack01.png" id="2_1u4tr"]
 [ext_resource type="PackedScene" uid="uid://c54e7bqbdndj6" path="res://player hb.tscn" id="2_562p4"]
 [ext_resource type="Texture2D" uid="uid://co5b86jd6sd7c" path="res://assets/Character/Orc-Idle.png" id="2_m6wut"]
+[ext_resource type="Texture2D" uid="uid://bxklwaw5j8bso" path="res://assets/Character/Orc-Death.png" id="2_y7cdv"]
 [ext_resource type="PackedScene" uid="uid://cdx12em7vm1f4" path="res://dice.tscn" id="4_hchht"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8u5ua"]
+atlas = ExtResource("2_1u4tr")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4q7v"]
+atlas = ExtResource("2_1u4tr")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4egk"]
+atlas = ExtResource("2_1u4tr")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8o1o4"]
+atlas = ExtResource("2_1u4tr")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_he0cp"]
+atlas = ExtResource("2_1u4tr")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5morp"]
+atlas = ExtResource("2_1u4tr")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1u4tr"]
+atlas = ExtResource("2_y7cdv")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hcub5"]
+atlas = ExtResource("2_y7cdv")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ssja"]
+atlas = ExtResource("2_y7cdv")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgwgi"]
+atlas = ExtResource("2_y7cdv")
+region = Rect2(300, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m6wut"]
 atlas = ExtResource("2_m6wut")
@@ -33,6 +75,46 @@ region = Rect2(500, 0, 100, 100)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1u4tr"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8u5ua")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4q7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a4egk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8o1o4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_he0cp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5morp")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1u4tr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hcub5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ssja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgwgi")
+}],
+"loop": false,
+"name": &"death",
+"speed": 9.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_m6wut")
@@ -72,8 +154,10 @@ position = Vector2(-611, -359)
 position = Vector2(269, -191)
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_1u4tr")
+animation = &"attack"
 autoplay = "default"
-frame_progress = 0.865107
+frame = 5
+frame_progress = 1.0
 flip_h = true
 
 [node name="Healthbar2" parent="villain" instance=ExtResource("2_562p4")]
