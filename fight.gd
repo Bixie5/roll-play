@@ -2,6 +2,8 @@ extends Node2D
 
 signal dice_rolled
 
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 @onready var villain: CharacterBody2D = $villain
 @onready var player: CharacterBody2D = $player
 
@@ -33,7 +35,18 @@ func _ready() -> void:
 	player_hp_bar.value = player_hp
 	enemy_hp_bar.value = enemy_hp
 	
+	enemy_sprite.animation_finished.connect(_on_enemy_anim_finished)
+	player_sprite.animation_finished.connect(_on_player_anim_finished)
+	
 	start_game()
+
+func _on_enemy_anim_finished():
+	if enemy_sprite.animation == "attack":
+		enemy_sprite.play("default")
+
+func _on_player_anim_finished():
+	if player_sprite.animation == "attack":
+		player_sprite.play("idle")
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("dice roll"):
@@ -78,8 +91,8 @@ func calculate_and_update_score(player_attack_value, enemy_attack_value):
 	if player_attack_value != enemy_attack_value:
 		weaker_attack = min(player_attack_value, enemy_attack_value)
 		if weaker_attack == player_attack_value:
-			villain.position.x -= 300
 			enemy_sprite.play("attack")
+			animation_player.play("villain_strike")
 			
 			player_hp -= damage
 			player_hp_bar.value = player_hp
@@ -88,6 +101,9 @@ func calculate_and_update_score(player_attack_value, enemy_attack_value):
 		elif weaker_attack == enemy_attack_value:
 			enemy_hp -= damage
 			enemy_hp_bar.value = enemy_hp
+			
+			player_sprite.play("attack")
+			animation_player.play("player_strike")
 			
 			print("remaining life of enemy: ", enemy_hp)
 			
