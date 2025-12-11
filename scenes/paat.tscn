@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://blt2gy1g2lnif"]
+
+[ext_resource type="AudioStream" uid="uid://dg5bwa7556ekc" path="res://assets/dark_knight_rises.mp3" id="1_uueux"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_uueux")
+volume_db = 24.0

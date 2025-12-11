@@ -1,13 +1,19 @@
-[gd_scene load_steps=30 format=3 uid="uid://cy4dl1uthcetb"]
+[gd_scene load_steps=40 format=3 uid="uid://cy4dl1uthcetb"]
 
 [ext_resource type="PackedScene" uid="uid://bt0xl43v0iuhh" path="res://character1.tscn" id="1_3mnov"]
 [ext_resource type="Texture2D" uid="uid://dywq8o8jngj0i" path="res://assets/Background/8-bit-graphics-pixels-scene-with-forest.jpg" id="1_4jl1m"]
 [ext_resource type="Script" uid="uid://c1m3s8e1xuhh2" path="res://fight.gd" id="1_34m47"]
 [ext_resource type="Texture2D" uid="uid://b4d8w3cvjhp8p" path="res://assets/Character/Orc-Attack01.png" id="2_1u4tr"]
+[ext_resource type="PackedScene" uid="uid://blt2gy1g2lnif" path="res://scenes/paat.tscn" id="2_2ssja"]
 [ext_resource type="PackedScene" uid="uid://c54e7bqbdndj6" path="res://player hb.tscn" id="2_562p4"]
 [ext_resource type="Texture2D" uid="uid://co5b86jd6sd7c" path="res://assets/Character/Orc-Idle.png" id="2_m6wut"]
 [ext_resource type="Texture2D" uid="uid://bxklwaw5j8bso" path="res://assets/Character/Orc-Death.png" id="2_y7cdv"]
 [ext_resource type="PackedScene" uid="uid://cdx12em7vm1f4" path="res://dice.tscn" id="4_hchht"]
+[ext_resource type="FontFile" uid="uid://c5l87il4rl4ny" path="res://Font/ARCADECLASSIC.TTF" id="6_hcub5"]
+[ext_resource type="Texture2D" uid="uid://64kuovdlb1nh" path="res://assets/Character/Orc-Hurt.png" id="7_i4q7v"]
+[ext_resource type="AudioStream" uid="uid://d0syofos3l2x0" path="res://assets/blade_hit_08.wav" id="8_rgwgi"]
+[ext_resource type="AudioStream" uid="uid://3ygooc6a35co" path="res://assets/body_hit_small_79.wav" id="10_8u5ua"]
+[ext_resource type="FontFile" uid="uid://bi57hvv17hv4w" path="res://Font/ari-w9500-bold.ttf" id="14_a4egk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8u5ua"]
 atlas = ExtResource("2_1u4tr")
@@ -72,6 +78,22 @@ region = Rect2(400, 0, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_y7cdv"]
 atlas = ExtResource("2_m6wut")
 region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgr32"]
+atlas = ExtResource("7_i4q7v")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wcprl"]
+atlas = ExtResource("7_i4q7v")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwncr"]
+atlas = ExtResource("7_i4q7v")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xpai3"]
+atlas = ExtResource("7_i4q7v")
+region = Rect2(300, 0, 100, 100)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1u4tr"]
 animations = [{
@@ -140,22 +162,24 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgr32")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wcprl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwncr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xpai3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 9.0
 }]
-
-[sub_resource type="Animation" id="Animation_1u4tr"]
-resource_name = "villain_strike"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("villain:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.0666667, 0.2, 0.933333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(-611, -359), Vector2(-920, -357), Vector2(-580, -357)]
-}
 
 [sub_resource type="Animation" id="Animation_hcub5"]
 length = 0.001
@@ -183,6 +207,30 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(-747, -498)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("player/player_song:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("villain/villain_song:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_2ssja"]
 resource_name = "player_strike"
@@ -198,6 +246,45 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(-747, -498), Vector2(-454, -498), Vector2(-748, -498)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("player/player_song:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_1u4tr"]
+resource_name = "villain_strike"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("villain:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0666667, 0.2, 0.933333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-611, -359), Vector2(-920, -357), Vector2(-580, -357)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("villain/villain_song:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2ssja"]
 _data = {
@@ -210,6 +297,35 @@ _data = {
 position = Vector2(472, 757)
 script = ExtResource("1_34m47")
 
+[node name="AudioStreamPlayer2D" parent="." instance=ExtResource("2_2ssja")]
+volume_db = 0.0
+autoplay = true
+parameters/looping = true
+
+[node name="villain_score" type="Label" parent="."]
+offset_left = -111.0
+offset_top = -973.0
+offset_right = 84.0
+offset_bottom = -914.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_fonts/font = ExtResource("6_hcub5")
+theme_override_font_sizes/font_size = 57
+text = "GAY AHH"
+
+[node name="player_score" type="Label" parent="."]
+offset_left = -1127.0
+offset_top = -967.0
+offset_right = -932.0
+offset_bottom = -908.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_fonts/font = ExtResource("6_hcub5")
+theme_override_font_sizes/font_size = 57
+text = "GAY AHH"
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-514, -677)
 zoom = Vector2(1.5, 1.5)
@@ -221,7 +337,7 @@ position = Vector2(-611, -359)
 position = Vector2(269, -191)
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_1u4tr")
-animation = &"attack"
+animation = &"hurt"
 autoplay = "default"
 flip_h = true
 
@@ -231,6 +347,10 @@ offset_top = -285.0
 offset_right = 344.0
 offset_bottom = -252.0
 nine_patch_stretch = true
+
+[node name="villain_song" type="AudioStreamPlayer2D" parent="villain"]
+stream = ExtResource("8_rgwgi")
+volume_db = 24.0
 
 [node name="player" parent="." instance=ExtResource("1_3mnov")]
 position = Vector2(-747, -498)
@@ -242,6 +362,10 @@ offset_top = -28.2
 offset_right = 14.0
 offset_bottom = -21.2
 nine_patch_stretch = true
+
+[node name="player_song" type="AudioStreamPlayer2D" parent="player"]
+stream = ExtResource("10_8u5ua")
+volume_db = 24.0
 
 [node name="bg" type="Sprite2D" parent="."]
 z_index = -1
@@ -260,6 +384,21 @@ offset_top = -459.0
 offset_right = 138.0
 offset_bottom = -320.0
 color = Color(0.917647, 0.968627, 0.439216, 0.988235)
+
+[node name="data_label" type="Label" parent="statusbar"]
+layout_mode = 0
+offset_left = 999.0
+offset_top = 16.0
+offset_right = 1274.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("14_a4egk")
+theme_override_font_sizes/font_size = 19
+text = "U ROLLED 5 → 150 atk
+Enemy Rolled 3 → 50 def
+Player HP → 400-200 = 300"
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
