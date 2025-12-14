@@ -16,7 +16,7 @@ signal sword_clicked
 @onready var villain_score: Label = $villain_score
 @onready var player_score: Label = $player_score
 
-@onready var sword: Sprite2D = $statusbar/sword
+@onready var sword: TextureButton = $statusbar/sword
 
 @onready var dice = $dice
 @onready var player_hp_bar = $"player/Healthbar"
@@ -39,13 +39,16 @@ var game_over = false
 
 var counter = 0
 
+var sword_original_scale: Vector2
 var sword_available := true   # once per game
 var sword_armed := false      # waiting to boost next atk roll
 
 var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
-	sword_clicked.connect(_on_sword_clicked)
+	sword_original_scale = sword.scale
+	sword.pressed.connect(_on_sword_clicked)
+	
 	
 	#rng.seed = Time.get_ticks_usec()
 	rng.randomize()
@@ -78,13 +81,6 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("dice roll"):
 		emit_signal("dice_rolled")
 
-	if event is InputEventMouseButton \
-	and event.pressed \
-	and event.button_index == MOUSE_BUTTON_LEFT:
-		if sword.get_rect().has_point(sword.to_local(get_global_mouse_position())):
-			emit_signal("sword_clicked")
-
-
 func start_game():
 	while not game_over:
 		match state:
@@ -105,7 +101,15 @@ func start_game():
 			data_label.text = "YOU DIED"
 			data_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
+	# Button feedback
+func click_pop():
+	var t = create_tween()
+	t.tween_property(sword, "scale", sword_original_scale * 0.9, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(sword, "scale", sword_original_scale, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+
 func _on_sword_clicked():
+	click_pop()
 	if sword_available and counter % 2 == 0:
 		sword_armed = true
 		sword_available = false
