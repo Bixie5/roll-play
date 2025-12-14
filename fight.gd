@@ -1,6 +1,7 @@
 extends Node2D
 
 signal dice_rolled
+signal sword_clicked
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -14,6 +15,8 @@ signal dice_rolled
 
 @onready var villain_score: Label = $villain_score
 @onready var player_score: Label = $player_score
+
+@onready var sword: Sprite2D = $statusbar/sword
 
 @onready var dice = $dice
 @onready var player_hp_bar = $"player/Healthbar"
@@ -36,9 +39,14 @@ var game_over = false
 
 var counter = 0
 
+var sword_available := true   # once per game
+var sword_armed := false      # waiting to boost next atk roll
+
 var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
+	sword_clicked.connect(_on_sword_clicked)
+	
 	#rng.seed = Time.get_ticks_usec()
 	rng.randomize()
 	
@@ -70,6 +78,13 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("dice roll"):
 		emit_signal("dice_rolled")
 
+	if event is InputEventMouseButton \
+	and event.pressed \
+	and event.button_index == MOUSE_BUTTON_LEFT:
+		if sword.get_rect().has_point(sword.to_local(get_global_mouse_position())):
+			emit_signal("sword_clicked")
+
+
 func start_game():
 	while not game_over:
 		match state:
@@ -90,6 +105,16 @@ func start_game():
 			data_label.text = "YOU DIED"
 			data_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
+func _on_sword_clicked():
+	if sword_available and counter % 2 == 0:
+		sword_armed = true
+		sword_available = false
+		
+		# 🔘 Grey out sword (visual feedback)
+		sword.modulate = Color(0.5, 0.5, 0.5)
+		
+		data_label.text = "Sword ready! Next attack gets +10\n"
+
 func player_turn():
 	if player_won or enemy_won:
 		game_over = true
@@ -98,6 +123,11 @@ func player_turn():
 	await dice_rolled
 	choice = await roll_dice()
 	player_attack_value = calc_attack_amount(choice)
+	
+	if sword_armed and counter % 2 == 0:
+		player_attack_value += 10
+		sword_armed = false   # consume sword
+	
 	if counter%2 == 0:
 		data_label.text = "You Rolled " + str(choice) + " → " + str(player_attack_value) + " atk\n"
 	else:

@@ -293,7 +293,7 @@ motion_mode = 1
 position = Vector2(0, -12.25)
 scale = Vector2(0.71875, 0.734375)
 sprite_frames = SubResource("SpriteFrames_u6jkn")
-animation = &"run"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
