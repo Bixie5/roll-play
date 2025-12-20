@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cy4dl1uthcetb"]
+[gd_scene load_steps=46 format=3 uid="uid://cy4dl1uthcetb"]
 
 [ext_resource type="PackedScene" uid="uid://bt0xl43v0iuhh" path="res://character1.tscn" id="1_3mnov"]
 [ext_resource type="Texture2D" uid="uid://dywq8o8jngj0i" path="res://assets/Background/8-bit-graphics-pixels-scene-with-forest.jpg" id="1_4jl1m"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://c6i4jshnq5nh6" path="res://icon_32_2_10.png" id="15_he0cp"]
 [ext_resource type="Texture2D" uid="uid://caeduc37k2ync" path="res://fc1351.png" id="17_wcprl"]
 [ext_resource type="Texture2D" uid="uid://v7bgjkv4y6em" path="res://fc1307.png" id="18_fwncr"]
+[ext_resource type="PackedScene" uid="uid://4a3amuj3j1v3" path="res://scenes/magik.tscn" id="19_fwncr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8u5ua"]
 atlas = ExtResource("2_1u4tr")
@@ -421,15 +422,26 @@ texture_normal = ExtResource("15_he0cp")
 texture_pressed = ExtResource("15_he0cp")
 texture_hover = ExtResource("15_he0cp")
 
-[node name="magik-1" type="Sprite2D" parent="statusbar"]
+[node name="magik_1" type="Sprite2D" parent="statusbar"]
 position = Vector2(374.5, 118.5)
 scale = Vector2(1.45312, 1.45312)
 texture = ExtResource("17_wcprl")
 
-[node name="magik-2" type="Sprite2D" parent="statusbar"]
-position = Vector2(503, 113.05)
+[node name="magik_2" type="TextureButton" parent="statusbar"]
+layout_mode = 0
+offset_left = 477.0
+offset_top = 85.0
+offset_right = 541.0
+offset_bottom = 149.0
 scale = Vector2(1.8125, 1.75158)
-texture = ExtResource("18_fwncr")
+pivot_offset = Vector2(32, 32)
+texture_normal = ExtResource("18_fwncr")
+texture_pressed = ExtResource("18_fwncr")
+texture_hover = ExtResource("18_fwncr")
+
+[node name="magik2_sprite" parent="statusbar/magik_2" instance=ExtResource("19_fwncr")]
+position = Vector2(1.10344, -90.1754)
+scale = Vector2(2, 2.068)
 
 [node name="bg" type="Sprite2D" parent="."]
 z_index = -1

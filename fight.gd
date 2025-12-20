@@ -18,6 +18,9 @@ signal sword_clicked
 
 @onready var sword: TextureButton = $statusbar/sword
 
+@onready var magik2: TextureButton = $statusbar/magik_2
+@onready var magik2_sprite: AnimatedSprite2D = $statusbar/magik_2/magik2_sprite/magik
+
 @onready var dice = $dice
 @onready var player_hp_bar = $"player/Healthbar"
 @onready var enemy_hp_bar = $"villain/Healthbar2"
@@ -43,12 +46,19 @@ var sword_original_scale: Vector2
 var sword_available := true   # once per game
 var sword_armed := false      # waiting to boost next atk roll
 
+var magik2_original_scale: Vector2
+var magik2_available := true
+
 var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
+	# --- sword setup ---
 	sword_original_scale = sword.scale
 	sword.pressed.connect(_on_sword_clicked)
 	
+	# --- magik setup ---
+	magik2_original_scale = magik2.scale
+	magik2.pressed.connect(_on_magik2_pressed)
 	
 	#rng.seed = Time.get_ticks_usec()
 	rng.randomize()
@@ -101,12 +111,25 @@ func start_game():
 			data_label.text = "YOU DIED"
 			data_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
-	# Button feedback
+	# sword Button feedback
 func click_pop():
 	var t = create_tween()
 	t.tween_property(sword, "scale", sword_original_scale * 0.9, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	t.tween_property(sword, "scale", sword_original_scale, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
+# --- Magik2 button click feedback ---
+func magik2_click_pop():
+	var t = create_tween()
+	t.tween_property(magik2, "scale", magik2_original_scale * 0.9, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(magik2, "scale", magik2_original_scale, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+# --- Magik2 heal animation ---
+func play_magik2_heal():
+	magik2_sprite.modulate.a = 0.0
+	magik2_sprite.play("heal")
+
+	var t = create_tween()
+	t.tween_property(magik2_sprite, "modulate:a", 1.0, 0.2)
 
 func _on_sword_clicked():
 	click_pop()
@@ -118,6 +141,29 @@ func _on_sword_clicked():
 		sword.modulate = Color(0.5, 0.5, 0.5)
 		
 		data_label.text = "Sword ready! Next attack gets +10\n"
+		
+func _on_magik2_pressed():
+	magik2_click_pop()
+
+	if not magik2_available:
+		return
+	if player_hp <= 0:
+		return
+	if state != State.PLAYER_ATTACK:
+		return
+
+	magik2_available = false
+	magik2.disabled = true
+	magik2.modulate = Color(0.5, 0.5, 0.5)
+
+	player_hp = min(player_hp + 80, 400)
+	player_hp_bar.value = player_hp
+	player_score.text = str(player_hp) + "/400"
+
+	play_magik2_heal()
+
+	magik2.modulate = Color(0.5, 0.5, 0.5)
+	data_label.text = "Healing magic restored 80 HP\n"
 
 func player_turn():
 	if player_won or enemy_won:
