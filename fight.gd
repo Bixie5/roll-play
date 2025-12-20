@@ -42,7 +42,7 @@ func _ready() -> void:
 	#rng.seed = Time.get_ticks_usec()
 	rng.randomize()
 	
-	data_label.text = ""
+	data_label.text = "                  STATS"
 	
 	player_hp = 400
 	enemy_hp = 400
