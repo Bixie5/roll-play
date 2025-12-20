@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cy4dl1uthcetb"]
+[gd_scene load_steps=46 format=3 uid="uid://cy4dl1uthcetb"]
 
 [ext_resource type="PackedScene" uid="uid://bt0xl43v0iuhh" path="res://character1.tscn" id="1_3mnov"]
 [ext_resource type="Texture2D" uid="uid://dywq8o8jngj0i" path="res://assets/Background/8-bit-graphics-pixels-scene-with-forest.jpg" id="1_4jl1m"]
@@ -13,7 +13,13 @@
 [ext_resource type="Texture2D" uid="uid://64kuovdlb1nh" path="res://assets/Character/Orc-Hurt.png" id="7_i4q7v"]
 [ext_resource type="AudioStream" uid="uid://d0syofos3l2x0" path="res://assets/blade_hit_08.wav" id="8_rgwgi"]
 [ext_resource type="AudioStream" uid="uid://3ygooc6a35co" path="res://assets/body_hit_small_79.wav" id="10_8u5ua"]
+[ext_resource type="Texture2D" uid="uid://du2axh6q0nbug" path="res://1.png" id="13_xgr32"]
 [ext_resource type="FontFile" uid="uid://bi57hvv17hv4w" path="res://Font/ari-w9500-bold.ttf" id="14_a4egk"]
+[ext_resource type="Texture2D" uid="uid://cc0g8yueiklaw" path="res://3.png" id="14_wcprl"]
+[ext_resource type="Texture2D" uid="uid://c6i4jshnq5nh6" path="res://icon_32_2_10.png" id="15_he0cp"]
+[ext_resource type="Texture2D" uid="uid://caeduc37k2ync" path="res://fc1351.png" id="17_wcprl"]
+[ext_resource type="Texture2D" uid="uid://v7bgjkv4y6em" path="res://fc1307.png" id="18_fwncr"]
+[ext_resource type="PackedScene" uid="uid://4a3amuj3j1v3" path="res://scenes/magik.tscn" id="19_fwncr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8u5ua"]
 atlas = ExtResource("2_1u4tr")
@@ -303,10 +309,10 @@ autoplay = true
 parameters/looping = true
 
 [node name="villain_score" type="Label" parent="."]
-offset_left = -111.0
-offset_top = -973.0
-offset_right = 84.0
-offset_bottom = -914.0
+offset_left = -121.0
+offset_top = -999.0
+offset_right = 74.0
+offset_bottom = -940.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 32
@@ -315,10 +321,10 @@ theme_override_font_sizes/font_size = 57
 text = "GAY AHH"
 
 [node name="player_score" type="Label" parent="."]
-offset_left = -1127.0
-offset_top = -967.0
-offset_right = -932.0
-offset_bottom = -908.0
+offset_left = -1137.0
+offset_top = -993.0
+offset_right = -942.0
+offset_bottom = -934.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 32
@@ -327,8 +333,8 @@ theme_override_font_sizes/font_size = 57
 text = "GAY AHH"
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-514, -677)
-zoom = Vector2(1.5, 1.5)
+position = Vector2(-514, -681)
+zoom = Vector2(1.46, 1.46)
 
 [node name="villain" type="CharacterBody2D" parent="."]
 position = Vector2(-611, -359)
@@ -337,7 +343,6 @@ position = Vector2(-611, -359)
 position = Vector2(269, -191)
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_1u4tr")
-animation = &"hurt"
 autoplay = "default"
 flip_h = true
 
@@ -367,30 +372,30 @@ nine_patch_stretch = true
 stream = ExtResource("10_8u5ua")
 volume_db = 24.0
 
-[node name="bg" type="Sprite2D" parent="."]
-z_index = -1
-position = Vector2(-505.5, -743.5)
-scale = Vector2(0.319196, 0.222098)
-texture = ExtResource("1_4jl1m")
+[node name="3" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-530, -417)
+scale = Vector2(1.91875, 1.91875)
+texture = ExtResource("14_wcprl")
 
 [node name="dice" parent="." instance=ExtResource("4_hchht")]
-position = Vector2(-521, -389)
+z_index = 1
+position = Vector2(-531, -415)
 scale = Vector2(5, 5)
 
-[node name="statusbar" type="ColorRect" parent="."]
-z_index = -2
-offset_left = -1149.0
-offset_top = -459.0
-offset_right = 138.0
-offset_bottom = -320.0
-color = Color(0.917647, 0.968627, 0.439216, 0.988235)
+[node name="statusbar" type="TextureRect" parent="."]
+offset_left = -1204.0
+offset_top = -526.0
+offset_right = 177.0
+offset_bottom = -288.0
+texture = ExtResource("13_xgr32")
 
 [node name="data_label" type="Label" parent="statusbar"]
 layout_mode = 0
-offset_left = 999.0
-offset_top = 16.0
-offset_right = 1274.0
-offset_bottom = 138.0
+offset_left = 974.0
+offset_top = 58.0
+offset_right = 1249.0
+offset_bottom = 180.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("14_a4egk")
 theme_override_font_sizes/font_size = 19
@@ -400,7 +405,57 @@ Player HP → 400-200 = 300"
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="sword" type="TextureButton" parent="statusbar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.602
+anchor_top = 0.498
+anchor_right = 0.602
+anchor_bottom = 0.498
+offset_left = -16.3621
+offset_top = -13.524
+offset_right = 15.6379
+offset_bottom = 18.476
+scale = Vector2(3.1, 3.1)
+pivot_offset = Vector2(16, 16)
+texture_normal = ExtResource("15_he0cp")
+texture_pressed = ExtResource("15_he0cp")
+texture_hover = ExtResource("15_he0cp")
+
+[node name="magik_1" type="Sprite2D" parent="statusbar"]
+position = Vector2(374.5, 118.5)
+scale = Vector2(1.45312, 1.45312)
+texture = ExtResource("17_wcprl")
+
+[node name="magik_2" type="TextureButton" parent="statusbar"]
+layout_mode = 0
+offset_left = 477.0
+offset_top = 85.0
+offset_right = 541.0
+offset_bottom = 149.0
+scale = Vector2(1.8125, 1.75158)
+pivot_offset = Vector2(32, 32)
+texture_normal = ExtResource("18_fwncr")
+texture_pressed = ExtResource("18_fwncr")
+texture_hover = ExtResource("18_fwncr")
+
+[node name="magik2_sprite" parent="statusbar/magik_2" instance=ExtResource("19_fwncr")]
+position = Vector2(1.10344, -90.1754)
+scale = Vector2(2, 2.068)
+
+[node name="bg" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-514, -769.5)
+scale = Vector2(0.324405, 0.222098)
+texture = ExtResource("1_4jl1m")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_2ssja")
 }
+
+[node name="1" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-517.5, -408.5)
+scale = Vector2(2.29561, 1.5625)
+texture = ExtResource("13_xgr32")

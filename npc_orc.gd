@@ -33,7 +33,6 @@ func start_dialogue():
 	$DialogueBubble/Label.text = dialogues[current_line]
 	current_line += 1
 
-
 func show_next_dialogue():
 	if current_line >= dialogues.size():
 		end_dialogue()
@@ -43,9 +42,11 @@ func show_next_dialogue():
 
 
 func end_dialogue():
+	get_tree().change_scene_to_file("res://fight.tscn")
 	dialogue_active = false
 	$DialogueBubble.visible = false
 
+@onready var orc: CharacterBody2D = $"."
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
@@ -53,12 +54,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		$DialogueBubble.visible = false
 		dialogue_active = false  # Optional: reset on exit/enter
 
-
-# Flip entire orc to face player
 		if body.global_position.x < global_position.x:
-			scale.x = -1  # Face left
+			get_child(0).flip_h = true
+			#scale.x = -1  # Face left
 		else:
-			scale.x = 1   # Face right
+			#scale.x = 1   # Face right
+			get_child(0).flip_h = false
 
 
 func _on_area_2d_body_exited(body: Node2D) -> void:

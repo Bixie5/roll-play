@@ -1,6 +1,7 @@
 extends Node2D
 
 signal dice_rolled
+signal sword_clicked
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -14,6 +15,11 @@ signal dice_rolled
 
 @onready var villain_score: Label = $villain_score
 @onready var player_score: Label = $player_score
+
+@onready var sword: TextureButton = $statusbar/sword
+
+@onready var magik2: TextureButton = $statusbar/magik_2
+@onready var magik2_sprite: AnimatedSprite2D = $statusbar/magik_2/magik2_sprite/magik
 
 @onready var dice = $dice
 @onready var player_hp_bar = $"player/Healthbar"
@@ -36,9 +42,24 @@ var game_over = false
 
 var counter = 0
 
+var sword_original_scale: Vector2
+var sword_available := true   # once per game
+var sword_armed := false      # waiting to boost next atk roll
+
+var magik2_original_scale: Vector2
+var magik2_available := true
+
 var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
+	# --- sword setup ---
+	sword_original_scale = sword.scale
+	sword.pressed.connect(_on_sword_clicked)
+	
+	# --- magik setup ---
+	magik2_original_scale = magik2.scale
+	magik2.pressed.connect(_on_magik2_pressed)
+	
 	#rng.seed = Time.get_ticks_usec()
 	rng.randomize()
 	
@@ -90,6 +111,60 @@ func start_game():
 			data_label.text = "YOU DIED"
 			data_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
+	# sword Button feedback
+func click_pop():
+	var t = create_tween()
+	t.tween_property(sword, "scale", sword_original_scale * 0.9, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(sword, "scale", sword_original_scale, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+# --- Magik2 button click feedback ---
+func magik2_click_pop():
+	var t = create_tween()
+	t.tween_property(magik2, "scale", magik2_original_scale * 0.9, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(magik2, "scale", magik2_original_scale, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+# --- Magik2 heal animation ---
+func play_magik2_heal():
+	magik2_sprite.modulate.a = 0.0
+	magik2_sprite.play("heal")
+
+	var t = create_tween()
+	t.tween_property(magik2_sprite, "modulate:a", 1.0, 0.2)
+
+func _on_sword_clicked():
+	click_pop()
+	if sword_available and counter % 2 == 0:
+		sword_armed = true
+		sword_available = false
+		
+		# 🔘 Grey out sword (visual feedback)
+		sword.modulate = Color(0.5, 0.5, 0.5)
+		
+		data_label.text = "Sword ready! Next attack gets +10\n"
+		
+func _on_magik2_pressed():
+	magik2_click_pop()
+
+	if not magik2_available:
+		return
+	if player_hp <= 0:
+		return
+	if state != State.PLAYER_ATTACK:
+		return
+
+	magik2_available = false
+	magik2.disabled = true
+	magik2.modulate = Color(0.5, 0.5, 0.5)
+
+	player_hp = min(player_hp + 80, 400)
+	player_hp_bar.value = player_hp
+	player_score.text = str(player_hp) + "/400"
+
+	play_magik2_heal()
+
+	magik2.modulate = Color(0.5, 0.5, 0.5)
+	data_label.text = "Healing magic restored 80 HP\n"
+
 func player_turn():
 	if player_won or enemy_won:
 		game_over = true
@@ -98,6 +173,11 @@ func player_turn():
 	await dice_rolled
 	choice = await roll_dice()
 	player_attack_value = calc_attack_amount(choice)
+	
+	if sword_armed and counter % 2 == 0:
+		player_attack_value += 10
+		sword_armed = false   # consume sword
+	
 	if counter%2 == 0:
 		data_label.text = "You Rolled " + str(choice) + " → " + str(player_attack_value) + " atk\n"
 	else:
